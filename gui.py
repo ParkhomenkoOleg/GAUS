@@ -4,8 +4,9 @@ from tkinter import *
 from tkinter import ttk, messagebox as mb, dialog
 from tkinter import filedialog as fd
 
+import solver
 from calculationFromFile import calculation_from_file
-from test import Example
+from test import Example, Maria
 
 
 class Oleh:
@@ -70,13 +71,33 @@ def hehe():
                      message="Чи хочете ви розв'язати рівняння методом Гауса у візуальному форматі?"):
         print("not hehe")
         root = tkinter.Tk()
-        example = Example(root).pack(side="top", fill="both", expand=True)
+        Example(root).pack(side="top", fill="both", expand=True)
         root.mainloop()
-        exit(0)
+
+
+        while not Maria.didWeGetData:
+            pass
+
+        pre_result = Maria.data
+        for i in range(len(pre_result)):
+            for j in range(len(pre_result[i])):
+                pre_result[i][j] = float(pre_result[i][j])
+        result = solver.solve(pre_result)
+
+
+
+
+        win = Tk()
+        win.geometry("400x400")
+        label = Label(win, text=result, font=("Courier 22 bold"))
+        label.pack()
+        tkinter.mainloop()
+        exit()
     else:
         mb.showwarning(title="Попередження",
-                       message="На жаль, більше немає форматів. Якщо хочете спробувати знову, то перезапустіть програму.")
-        exit(0)
+                       message="На жаль, більше немає форматів. Якщо хочете спробувати знову, то перезапустіть "
+                               "програму.")
+        exit()
     # d = MyDialog(tkinter.dialog.Dialog)
     # print(d.result)
     # win.mainloop()

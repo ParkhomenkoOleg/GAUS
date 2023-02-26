@@ -1,4 +1,11 @@
 import tkinter as tk
+import re
+
+
+class Maria:
+    didWeGetData = False
+    data = []
+
 
 class SimpleTableInput(tk.Frame):
     def __init__(self, parent, rows, columns):
@@ -35,20 +42,31 @@ class SimpleTableInput(tk.Frame):
             result.append(current_row)
         return result
 
-    def _validate(self, P):
-        '''Perform input validation.
+    def _validate(self, string):
+        regex = re.compile(r"(\+|\-)?[0-9.]*$")
+        result = regex.match(string)
+        return (string == ""
+                or (string.count('+') <= 1
+                    and string.count('-') <= 1
+                    and string.count(',') <= 1
+                    and result is not None
+                    and result.group(0) != ""))
+    # def _validate(self, P):
+    #
+    #     '''Perform input validation.
+    #
+    #     Allow only an empty value, or a value that can be converted to a float
+    #     '''
+    #     if P.strip() == "":
+    #         return True
+    #
+    #     try:
+    #         f = float(P)
+    #     except ValueError:
+    #         self.bell()
+    #         return False
+    #     return True
 
-        Allow only an empty value, or a value that can be converted to a float
-        '''
-        if P.strip() == "":
-            return True
-
-        try:
-            f = float(P)
-        except ValueError:
-            self.bell()
-            return False
-        return True
 
 class Example(tk.Frame):
     def __init__(self, parent):
@@ -60,11 +78,15 @@ class Example(tk.Frame):
 
     def on_submit(self):
         print(self.table.get())
+        if self.get_table():
+            print("here")
+            Maria.didWeGetData = True
+            Maria.data = self.table.get()
 
     def get_table(self):
         isFull = True
         for i in range(len(self.table.get())):
-            for j in range (len(self.table.get()[i])):
+            for j in range(len(self.table.get()[i])):
                 if self.table.get()[i][j] == "":
                     isFull = False
         if isFull:
@@ -72,10 +94,12 @@ class Example(tk.Frame):
         else:
             return "Error"
 
+
 def testik():
     root = tk.Tk()
     Example(root).pack(side="top", fill="both", expand=True)
     root.mainloop()
+
 
 if __name__ == '__main__':
     testik()

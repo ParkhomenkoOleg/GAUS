@@ -40,8 +40,6 @@ def hehe():
     if mb.askyesno(title="Важливе питання", message="Чи хочете ви розв'язати рівняння методом Гауса у форматі файла?"):
         print("ФОРМАТ ФАЙЛУ")
 
-        # name = "invalid"
-
         def callback():
             global name
             name = fd.askopenfilename()
@@ -57,10 +55,7 @@ def hehe():
         while not Oleh.didWeGetPath:
             pass
 
-        print("Path: " + name)
-
         result = calculation_from_file(name)
-        # result = calculation_from_file(name)
         win = Tk()
         win.geometry("400x400")
         label = Label(win, text=result, font=("Courier 22 bold"))

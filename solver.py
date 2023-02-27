@@ -1,63 +1,49 @@
-# Importing NumPy Library
 import numpy as np
 import sys
 
 
-def solve(pre_result):
+def conversion_from_str(pre_result):
     for i in range(len(pre_result)):
         for j in range(len(pre_result[i])):
             pre_result[i][j] = float(pre_result[i][j])
-    matrix = pre_result
-    # Reading number of unknowns
-    n = 3
+    return pre_result
 
-    # Making numpy array of n x n+1 size and initializing
-    # to zero for storing augmented matrix
-    a = matrix
-    # a = np.zeros((n, n + 1))
+
+def solve(pre_result):
+    a = conversion_from_str(pre_result)
+
+    # Reading number of unknowns
+    size = len(a)
 
     # Making numpy array of n size and initializing
     # to zero for storing solution vector
-    x = np.zeros(n)
-
-    # Reading augmented matrix coefficients
-    # print('Enter Augmented Matrix Coefficients:')
-    # for i in range(n):
-    #     for j in range(n + 1):
-    #         a[i][j] = float(input('a[' + str(i) + '][' + str(j) + ']='))
+    x = np.zeros(size)
 
     # Applying Gauss Elimination
-    for i in range(n):
+    for i in range(size):
         if a[i][i] == 0.0:
             sys.exit('Divide by zero detected!')
-
-        for j in range(i + 1, n):
+        for j in range(i + 1, size):
             ratio = a[j][i] / a[i][i]
-
-            for k in range(n + 1):
+            for k in range(size + 1):
                 a[j][k] = a[j][k] - ratio * a[i][k]
 
     # Back Substitution
-    x[n - 1] = a[n - 1][n] / a[n - 1][n - 1]
+    x[size - 1] = a[size - 1][size] / a[size - 1][size - 1]
 
-    for i in range(n - 2, -1, -1):
-        x[i] = a[i][n]
-
-        for j in range(i + 1, n):
+    for i in range(size - 2, -1, -1):
+        x[i] = a[i][size]
+        for j in range(i + 1, size):
             x[i] = x[i] - a[i][j] * x[j]
 
         x[i] = x[i] / a[i][i]
 
     # Displaying solution
-    # print('\nRequired solution is: ')
-    str = ""
-    for i in range(n):
-        temp_str = "{} ".format(round(x[i]))
-        # str += str.format('X%d = %0.2f\n', )
-        str += temp_str
+    temp_str = ""
+    for i in range(size):
+        temp_str += "x{}  = {}\n".format(i, (round(x[i], 2)))
 
-    return str
-    # print('X%d = %0.2f' % (i, x[i]), end='\t')
+    return temp_str
 
 
 # 4,42	12,6	5,77	1,56
